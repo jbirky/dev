@@ -1,4 +1,4 @@
-## approxposterior
+# approxposterior
 
 ```
 src/
@@ -13,10 +13,15 @@ src/
     - `ninit` - initial training sample size (`m0`)
     - `niter` - number of GP training iterations (`m`)
     - `mcmc_sampler` - mcmc sampling algorithm (e.g. `emcee`, `dynesty`)
-- [ ] add initial training sample function
+- [ ] add initial training sample function - compute samples of target function, parallelized 
 - [ ] add diagnostic plotting functions
+    - [ ] training sample corner plot, colored by function (lnP) value
+    - [ ] iteration vs. lnP 
+    - [ ] density corner plot of mcmc samples
+- [ ] implement other mcmc sampling options
+    - [ ] dynesty
 
-Basic Usage
+### Basic Usage
 ```
 def fn(x):
     return 1 - x**2
@@ -29,14 +34,18 @@ import approxposterior as approx
 theta0, y0 = approx.initialSample(fn, bounds=bounds)  # opt: ninit=100
 
 ap = approx.ApproxPosterior(theta=theta0, y=y0, fn=fn, bounds=bounds)  # opt: gp=gp
-ap.train()     # opt: niter=1000
-ap.run_mcmc()  # opt: mcmc_sampler='emcee'
+ap.train()       # opt: niter=1000
 
+ap.run_mcmc()    # opt: mcmc_sampler='emcee'
+
+ap.bayesOpt()    # minObjMethod='nelder-mead'
+```
+```
 ap.plot(plots=['corner', 'training'])
 ```
 
 
-## vplanet_inference
+# vplanet_inference
 
 ```
 src/
@@ -45,12 +54,18 @@ src/
 ### Tasks:
 - [ ] 
 
-## science repo
+# science repo (tidalq)
 
 ```
 infile/
     ctl/
+        primary.in
+        secondary.in
+        vpl.in
     cpl/
+        primary.in
+        secondary.in
+        vpl.in
 src/
     model_ctl.py
     model_cpl.py
@@ -114,9 +129,8 @@ import vplanet_inference as vpi
 
 import argparse
 
-parser = argparse.ArgumentParser(description='Process some integers.')
-parser.add_argument('integers', metavar='N', type=int, nargs='+',
-                    help='an integer for the accumulator')
+parser = argparse.ArgumentParser(description='')
+parser.add_argument('files', metavar='N', type=str, nargs='+', help='')
 
 model, config  <-  parser
 
