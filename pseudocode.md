@@ -1,5 +1,6 @@
 # approxposterior
 
+### Directory structure:
 ```
 src/
     __init__.py
@@ -8,25 +9,16 @@ src/
     mcmcUtils.py
     utility.py
 ```
-### Tasks:
-- [ ] which parts of approxposterior do we keep? which are depricated/should be cut?
-- [ ] rename package
-- [ ] test and implement new convergence criteria
-    - convergence of GP hyperparameters?
-    - convergence of GP mean and covariance? 
-- [ ] create default aprroxposterior settings for:
-    - `ninit` - initial training sample size (`m0`)
-    - `niter` - number of GP training iterations (`m`)
-    - `mcmc_sampler` - mcmc sampling algorithm (e.g. `emcee`, `dynesty`)
-- [ ] add initial training sample function - compute samples of target function, parallelized 
-- [ ] parallelize GP optimization (install python 3.9)
-- [ ] add diagnostic plotting functions
-    - [ ] training sample corner plot, colored by function (lnP) value
-    - [ ] iteration vs. lnP 
-    - [ ] density corner plot of mcmc samples
-- [ ] implement other mcmc sampling options
-    - [ ] dynesty (ask Jake for prior transform functions)
-- [ ] good 'benchmark' distributions? 
+
+### Scope
+- generalized to any function optimization or mcmc problem
+    - 'Basic usage' template with default settings 
+        - as simple to use as `scipy.optimize` or `emcee`
+        - helper functions for constructing common priors and likelihoods
+    - 'Advanced usage' tutorials 
+        - users can experiment with different GP and MCMC settings
+        - flexible for user defined functions, priors, likelihoods 
+- should NOT contain any functionality specific to vplanet (this will go in the `vplanet_inference` package)
 
 ### Basic Usage
 ```
@@ -39,12 +31,12 @@ bounds = [(-1,1)]
 import approxposterior as approx
 
 
-theta0, y0 = approx.initialSample(fn, bounds=bounds)  # opt: ninit=100
+theta0, y0 = approx.initialSample(fn, bounds=bounds)  # opt: ninit=100, sampling='uniform'
 
 ap = approx.ApproxPosterior(theta=theta0, y=y0, fn=fn, bounds=bounds)  # opt: gp=gp
 ap.train()       # opt: niter=1000
 
-ap.run_mcmc()    # opt: mcmc_sampler='emcee'
+ap.run_mcmc()    # opt: mcmc_sampler='emcee', mcmc
 
 ap.bayesOpt()    # minObjMethod='nelder-mead'
 ```
@@ -52,9 +44,36 @@ ap.bayesOpt()    # minObjMethod='nelder-mead'
 ap.plot(plots=['corner', 'training'])
 ```
 
+### Tasks:
+- [ ] which parts of approxposterior do we keep? which are depricated/should be cut?
+- [ ] rename package
+    - gaussian process accelerated bayesian inference (GABI)
+    - kernel regression accelerated bayesian inference (KRABI)
+    - active learning kernel regression accelerated bayesian inference (ALKABI)
+    - active learning accelerated bayesian inference (ALABI)
+- [ ] test and implement new convergence criteria
+    - convergence of GP hyperparameters?
+    - convergence of GP mean and covariance? 
+- [ ] create default aprroxposterior settings for:
+    - `ninit` - initial training sample size (`m0`)
+    - `niter` - number of GP training iterations (`m`)
+    - `mcmc_sampler` - mcmc sampling algorithm (e.g. `emcee`, `dynesty`)
+- [ ] add initial training sample function 
+    - compute samples of target function, parallelized 
+    - implement different hypercube sampling options (e.g. grid, uniform, sobol)
+- [ ] parallelize GP optimization (install python 3.9)
+- [ ] add diagnostic plotting functions
+    - [ ] training sample corner plot, colored by function (lnP) value
+    - [ ] iteration vs. lnP 
+    - [ ] density corner plot of mcmc samples
+- [ ] implement other mcmc sampling options
+    - [ ] dynesty (ask Jake for prior transform functions)
+- [ ] good 'benchmark' distributions? 
+
 
 # vplanet_inference
 
+### Directory structure:
 ```
 src/
     model.py
@@ -65,6 +84,7 @@ src/
 
 # science repo (tidalq)
 
+### Directory structure:
 ```
 infile/
     ctl/
@@ -92,9 +112,6 @@ scripts/
                 results/
                     ...
 ```
-
-### Tasks:
-- [ ] 
 
 ### src/model_ctl.py
 ```
@@ -191,3 +208,6 @@ gp = gpUtils.defaultGP(theta, y, white_noise=-12)
 ```
 >>> python src/run.py <model file> <config file> --run_mcmc --sampler=emcee
 ```
+
+### Tasks:
+- [ ] define configuration script setup (`config.py`) 
