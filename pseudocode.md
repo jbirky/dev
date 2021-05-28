@@ -9,6 +9,7 @@ src/
     utility.py
 ```
 ### Tasks:
+- [ ] which parts of approxposterior do we keep? which are depricated/should be cut?
 - [ ] rename package
 - [ ] test and implement new convergence criteria
     - convergence of GP hyperparameters?
@@ -59,7 +60,8 @@ src/
     model.py
 ```
 ### Tasks:
-- [ ] 
+- [ ] user specified units? 
+- [ ] automatically handle vplanet minus signs in inputs?
 
 # science repo (tidalq)
 
