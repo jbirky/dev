@@ -1,6 +1,9 @@
 # approxposterior
 
-### Directory structure:
+### Old directory structure:
+![](img/approxposterior.svg)
+
+### Proposed directory structure:
 ```
 src/
     __init__.py
@@ -36,7 +39,7 @@ theta0, y0 = approx.initialSample(fn, bounds=bounds)  # opt: ninit=100, sampling
 ap = approx.ApproxPosterior(theta=theta0, y=y0, fn=fn, bounds=bounds)  # opt: gp=gp
 ap.train()       # opt: niter=1000
 
-ap.run_mcmc()    # opt: mcmc_sampler='emcee', mcmc
+ap.run_mcmc()    # opt: mcmc_sampler='emcee', mcmc_kwargs={}
 
 ap.bayesOpt()    # minObjMethod='nelder-mead'
 ```
@@ -61,6 +64,8 @@ ap.plot(plots=['corner', 'training'])
 - [ ] add initial training sample function 
     - compute samples of target function, parallelized 
     - implement different hypercube sampling options (e.g. grid, uniform, sobol)
+- [ ] add prior and likelihood helper functions
+    - add ability to use a prior from a previous run
 - [ ] parallelize GP optimization (install python 3.9)
 - [ ] add diagnostic plotting functions
     - [ ] training sample corner plot, colored by function (lnP) value
@@ -69,6 +74,7 @@ ap.plot(plots=['corner', 'training'])
 - [ ] implement other mcmc sampling options
     - [ ] dynesty (ask Jake for prior transform functions)
 - [ ] good 'benchmark' distributions? 
+- [ ] plan for user plugins for specific packages like vplanet
 
 
 # vplanet_inference
@@ -81,6 +87,7 @@ src/
 ### Tasks:
 - [ ] user specified units? 
 - [ ] automatically handle vplanet minus signs in inputs?
+    - look in v2.0 bigplanet?
 
 # science repo (tidalq)
 
