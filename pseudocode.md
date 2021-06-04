@@ -1,18 +1,5 @@
 # approxposterior
 
-### Old directory structure:
-![](img/approxposterior.svg)
-
-### Proposed directory structure:
-```
-src/
-    __init__.py
-    approx.py
-    gpUtils.py
-    mcmcUtils.py
-    utility.py
-```
-
 ### Scope
 - generalized to any function optimization or mcmc problem
     - 'Basic usage' template with default settings 
@@ -24,13 +11,13 @@ src/
 - should NOT contain any functionality specific to vplanet (this will go in the `vplanet_inference` package)
 
 ### Basic Usage
-```
+```python
 def fn(x):
     return 1 - x**2
 
 bounds = [(-1,1)]
 ```
-```
+```python
 import approxposterior as approx
 
 
@@ -88,6 +75,7 @@ src/
 - [ ] user specified units? 
 - [ ] automatically handle vplanet minus signs in inputs?
     - look in v2.0 bigplanet?
+- [ ] integrate with bigplanet hdf5 compression
 
 # science repo (tidalq)
 
@@ -121,7 +109,7 @@ scripts/
 ```
 
 ### src/model_ctl.py
-```
+```python
 import vplanet_inference as vpi
 
 __all__ = ['vpm']
@@ -163,7 +151,7 @@ vpm = vpi.VplanetModel(inparams, inpath=inpath, infile_list=infile_list, factor=
 ```
 
 ### src/run.py
-```
+```python
 import approxposterior as approx
 import argparse
 
@@ -194,7 +182,7 @@ if run_mcmc == True:
 
 ### scripts/ctl/test0/config.py
 
-```
+```python
 __all__ = ['bounds', 'data', 
            'sample_method', 
            'mcmc_sampler'
