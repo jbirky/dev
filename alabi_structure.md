@@ -12,6 +12,7 @@
 [A] = add new module
 
 (O) = to be completed
+(S) = started
 (X) = completed
 ```
 ```
@@ -19,7 +20,8 @@ __init__.py             [C] (O) remove deprecated imports
 
 approx.py
     ApproxPosterior     
-        __init__        [C] (O) option to load cached sims
+        __init__        [C] (O) default options for: priorSample
+                            (O) rename: lnlike + lnprior -> fn
         _gpll           [K]     
         optGP           [K]     calls gpUtils.optimizeGP; might need to tweak inputs
         run             [M] (O) rename -> train
@@ -40,6 +42,7 @@ gpUtils.py
     defaultGP           [K]
     optimizeGP          [C] (O) parallelize
     convergenceCheck    [A] (O) implement convergence criteria (tbd)
+    hyperCubeSample     [A] (O) sampling methods (uniform, grid, sobol)
 
 likelihood.py           [M] (O) rename to benchmarks.py; add more benchmark functions
     rosenbrockLnlike
