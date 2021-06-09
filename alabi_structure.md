@@ -11,40 +11,43 @@
 [R] = remove module
 [A] = add new module
 
-(O) = to be completed
-(S) = started
-(X) = completed
+(0) = to be completed
+(1) = started
+(2) = completed implementation
+(3) = completed, tested, and working
+(4) = completed documenting and commenting
 ```
 ```
-__init__.py             [C] (O) remove deprecated imports 
+__init__.py             [C] (0) remove deprecated imports 
 
-approx.py
-    ApproxPosterior     
-        __init__        [C] (S) default options for: priorSample
-                            (S) get rid of inputs: lnlike, lnprior 
+core.py
+    SurrogateModel     
+        __init__        [C] (1) default options for: priorSample
+                            (1) get rid of inputs: lnlike, lnprior 
                                 add input: fn (replaces lnlike)
-                            (S) option to load theta0, y0
-        initialSample   [A] (O) compute initial training samples (theta0, y0)
+                            (1) option to load theta0, y0
+                            (0) add cache option, which will pickle SM obj (every iteration?)
         _gpll           [K]     
         optGP           [K]     calls gpUtils.optimizeGP; might need to tweak inputs
-        run             [M] (O) rename -> train
-                        [C] (O) remove MCMC, only call findNextPoint
-                            (O) remove old convergence criteria; add new cc from gpUtils
-                            (O) option to restart training from where you left off
-        findNextPoint   [C] (O) think this is mostly what I want; change some variable names
-        runMCMC         [C] (O) add option for choosing MCMC package
+        run             [R]     replace with 'active_sample' function
+        initial_sample  [A] (0) compute initial training samples (theta0, y0)
+        active_sample   [A] (0) call 'findNextPoint' for specified niter
+        findNextPoint   [C] (0) think this is mostly what I want; change some variable names
+        runMCMC         [C] (0) add option for choosing MCMC package
         findMAP         [K]
-        bayesOpt        [C] (O) remove old convergence criteria; add new cc from gpUtils
-        plot            [A] (O) call functions from visualization.py
+        bayesOpt        [C] (0) remove old convergence criteria; add new cc from gpUtils
+        plot            [A] (0) call functions from visualization.py 
+
+    loadModel           [A] (0) load pickled model and print summary
 
 gpUtils.py
     defaultHyperPrior   [K] 
     defaultGP           [K]
-    optimizeGP          [C] (O) parallelize
-    convergenceCheck    [A] (O) implement convergence criteria (tbd)
-    hyperCubeSample     [A] (O) sampling methods (uniform, grid, sobol)
+    optimizeGP          [C] (0) parallelize
+    convergenceCheck    [A] (0) implement convergence criteria (tbd)
+    hyperCubeSample     [A] (0) sampling methods (uniform, grid, sobol)
 
-mcmcUtils.py            [M] (O) these functions are specific to emcee -> emceeUtils?
+mcmcUtils.py            [M] (0) these functions are specific to emcee -> emceeUtils?
                                 maybe want generalized mcmcUtils wrapper?
     validateMCMCKwargs  [K]
     batchMeansMCSE      [K]
@@ -58,24 +61,23 @@ utility.py
     minimizeObjective   [K]
     klNumerical         [R]
 
-likelihood.py           [M] (O) rename to benchmarks.py; add more benchmark functions
+likelihood.py           [M] (0) rename to benchmarks.py; add more benchmark functions
     rosenbrockLnlike
     rosenbrockLnprior
     rosenbrockSample
     rosenbrockLnprob
     ... 
-
 ```
 ```
-bayes.py                [A] (O) utilities for constructing common likelihood/prior fns
+bayes.py                [A] (0) utilities for constructing common likelihood/prior fns
                                 include prior transform function
 
-defaults.py             [A] (O) define default settings and import to other files?
+defaults.py             [A] (0) define default settings and import to other files?
 
-visualization.py        [A] (O) import into approx.py
-    cornerLnP           [A] (O)
-    cornerDensity       [A] (O)
-    iterationLnP        [A] (O)
+visualization.py        [A] (0) import into approx.py
+    cornerLnP           [A] (0)
+    cornerDensity       [A] (0)
+    iterationLnP        [A] (0)
 ```
 ```
 priors.py               [R]     not implemented functions
