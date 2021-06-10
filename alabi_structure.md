@@ -23,15 +23,15 @@ __init__.py                 [C] (0) remove deprecated imports
 core.py
     SurrogateModel     
         __init__            [C] (1) get rid of inputs: lnlike, lnprior, priorSample 
-                                    add input: fn (replaces lnlike)
+                                    add input: fn (fn=lnposterior or fn=lnlike)
                                 (1) add cache option, which will pickle SM obj (every iteration?)
         evaluate                    (previously _gpll)
-                            [R] (2) rename -> evaluate  
-                                (2) remove prior   
+                            [C] (2) remove prior   
         opt_gp              [K]     calls gpUtils.optimizeGP; might need to tweak inputs
         run                 [R]     replace with 'active_sample' function
         init_train          [A] (0) compute initial training samples (theta0, y0)
                                 (0) default options for: priorSample
+                                (0) parallelize
                                 (0) option to load theta0, y0
         init_test           [A] (0) compute test samples (theta_test, y_test) to evaluate GP error
         active_train        [A] (0) call 'findNextPoint' for specified niter
