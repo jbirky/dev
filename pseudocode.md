@@ -81,19 +81,33 @@ bounds = [(-1,1)]
 ```python
 import alabi
 
-ap = alabi.SurrogateModel(fn=fn, bounds=bounds)  # opt: gp=gp
+# Initialize function and bounds for surrogate model
+sm = alabi.SurrogateModel(fn=fn, bounds=bounds)     # opt: gp=gp
 
-ap.initial_train()  # opt: ninit=100, sampling='uniform'
+# Compute (or load) initial training samples
+sm.init_train()         # opt: ninit=100, parallel=True, ncore='all'
+                        #      sampler='uniform' or sampler=custom_fn
+                        # or load precomputed sample: theta0=[], y0=[]
 
-ap.active_train()   # opt: niter=1000
+# Compute test samples (optional) - can be used in convergence criteria
+sm.init_test()          # opt: same as init_train()
 
-ap.run_mcmc()       # opt: mcmc_sampler='emcee', mcmc_kwargs={}
+# Compute active learning training samples
+sm.active_train()       # opt: niter=1000
 
-ap.bayes_opt()      # minObjMethod='nelder-mead'
-```
-```
+# Run MCMC or optimization on trained surrogate model
+sm.run_mcmc()           # opt: mcmc_sampler='emcee', mcmc_kwargs={}
+# or
+sm.bayes_opt()          # opt: minObjMethod='nelder-mead'
+
+# Plot diagnostics
 ap.plot(plots=['corner', 'training'])
 ```
+
+### Questions:
+
+- train surrogate model on lnLike (and add lnPrior after), rather than training surrogate model on lnPosterior?
+- evaluate GP error on test sample?
 
 ### Tasks:
 - [ ] which parts of approxposterior do we keep? which are depricated/should be cut?
@@ -105,6 +119,7 @@ ap.plot(plots=['corner', 'training'])
 - [ ] test and implement new convergence criteria
     - convergence of GP hyperparameters?
     - convergence of GP mean and covariance? 
+    - test sample error?
 - [ ] create default aprroxposterior settings for:
     - `ninit` - initial training sample size (`m0`)
     - `niter` - number of GP training iterations (`m`)
